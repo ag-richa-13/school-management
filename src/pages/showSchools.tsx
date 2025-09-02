@@ -175,7 +175,7 @@ export default function ShowSchools() {
                       onChange={(e) =>
                         setForm({ ...form, [field]: e.target.value })
                       }
-                      className="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:ring-1 focus:ring-blue-300 placeholder-[#A8BBA3]"
+                      className="w-full border border-gray-300 rounded px-2 py-1 text-sm text-black placeholder-gray-500 focus:ring-1 focus:ring-blue-300"
                     />
                   </div>
                 )

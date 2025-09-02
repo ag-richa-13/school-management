@@ -77,7 +77,7 @@ export default function AddSchool() {
                   pattern: field.key === "email_id" ? /^\S+@\S+$/i : undefined,
                 })}
                 placeholder={`Enter ${field.label.toLowerCase()}`}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-1 focus:ring-indigo-400 outline-none text-sm"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-1 focus:ring-indigo-400 outline-none text-sm text-black placeholder-gray-500"
               />
               {errors[field.key as keyof FormData] && (
                 <p className="text-red-500 text-xs mt-1">
@@ -94,7 +94,7 @@ export default function AddSchool() {
             <input
               type="file"
               {...register("image", { required: true })}
-              className="w-full border border-gray-300 rounded-lg px-2 py-2 bg-gray-50 text-sm"
+              className="w-full border border-gray-300 rounded-lg px-2 py-2 bg-gray-50 text-sm text-black placeholder-gray-500"
             />
             {errors.image && (
               <p className="text-red-500 text-xs mt-1">Image is required</p>

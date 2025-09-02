@@ -54,26 +54,34 @@ export default async function handler(
       ? fields.email_id[0]
       : fields.email_id;
 
-    // 🔥 Check if school with same name already exists
+    const uploadedFile = files.image
+      ? Array.isArray(files.image)
+        ? files.image[0]
+        : files.image
+      : null;
+
+    if (!uploadedFile) {
+      return res.status(400).json({ error: "Image is required" });
+    }
+
+    // 🔥 Validate file type
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+    if (!allowedTypes.includes((uploadedFile as File).mimetype || "")) {
+      return res.status(400).json({ error: "Only image files are allowed" });
+    }
+
+    // Check duplicate school
     const existingSchool = await prisma.schools.findFirst({
-      where: {
-        name: name || "",
-      },
+      where: { name: name || "" },
     });
 
     if (existingSchool) {
       return res.status(400).json({ error: "School already exists!" });
     }
 
-    // Handle file upload
-    const uploadedFile = files.image
-      ? Array.isArray(files.image)
-        ? files.image[0]
-        : files.image
-      : null;
-    const imagePath = uploadedFile
-      ? `/schoolImages/${path.basename((uploadedFile as File).filepath)}`
-      : "";
+    const imagePath = `/schoolImages/${path.basename(
+      (uploadedFile as File).filepath
+    )}`;
 
     await prisma.schools.create({
       data: {

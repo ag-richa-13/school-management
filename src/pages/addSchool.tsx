@@ -93,6 +93,7 @@ export default function AddSchool() {
             </label>
             <input
               type="file"
+              accept="image/*" // 🔥 Only allow images
               {...register("image", { required: true })}
               className="w-full border border-gray-300 rounded-lg px-2 py-2 bg-gray-50 text-sm text-black placeholder-gray-500"
             />

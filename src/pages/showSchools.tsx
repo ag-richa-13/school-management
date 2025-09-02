@@ -41,7 +41,7 @@ export default function ShowSchools() {
     if (!confirm("Are you sure you want to delete this school?")) return;
     try {
       await fetch(`/api/schools/delete?id=${id}`, { method: "DELETE" });
-      setSchools(schools.filter((school) => school.id !== id));
+      setSchools((prev) => prev.filter((school) => school.id !== id)); // ✅ Update UI immediately
     } catch (error) {
       console.error("Error deleting school:", error);
     }
@@ -55,13 +55,21 @@ export default function ShowSchools() {
   async function saveEdit() {
     if (!editingSchool) return;
     try {
-      await fetch(`/api/schools/edit?id=${editingSchool.id}`, {
+      const res = await fetch(`/api/schools/edit?id=${editingSchool.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+
+      if (!res.ok) throw new Error("Failed to update");
+
+      const updatedSchool = await res.json();
+
+      setSchools((prev) =>
+        prev.map((s) => (s.id === updatedSchool.id ? updatedSchool : s))
+      ); // ✅ Update UI immediately
+
       setEditingSchool(null);
-      fetchSchools();
     } catch (error) {
       console.error("Error updating school:", error);
     }
